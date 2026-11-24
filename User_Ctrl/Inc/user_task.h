@@ -14,7 +14,7 @@ extern TaskHandle_t user_task_handle;
 
 void User_Task_Init(void);
 void User_Task(void *argument);
-float wheelpos(void);
+void lightmode(void);
 
 #ifdef __cplusplus
 }

@@ -488,31 +488,39 @@ void GetPCMsg(const uint8_t *data, uint16_t len)
 
 	gRobot.runSucceedFlag = (pcdata[ctrlBase] >> 0) & 0x01;
 	
-	leg1Tar.mode = (pcdata[ctrlBase + 1] >> 0) & 0x03;
-	leg2Tar.mode = (pcdata[ctrlBase + 1] >> 2) & 0x03;
-	leg3Tar.mode = (pcdata[ctrlBase + 1] >> 4) & 0x03;
-	leg4Tar.mode = (pcdata[ctrlBase + 1] >> 6) & 0x03;
+	screw1Tar.mode = (pcdata[ctrlBase + 1] >> 0) & 0x03;
+	screw2Tar.mode = (pcdata[ctrlBase + 1] >> 2) & 0x03;
+	
 
 	wheel1Tar.mode = (pcdata[ctrlBase + 2] >> 0) & 0x03;
 	wheel2Tar.mode = (pcdata[ctrlBase + 2] >> 2) & 0x03;
 	wheel3Tar.mode = (pcdata[ctrlBase + 2] >> 4) & 0x03;
 	wheel4Tar.mode = (pcdata[ctrlBase + 2] >> 6) & 0x03;
-	
-	valve_num[4]  = (pcdata[ctrlBase + 3] >> 0) & 0x01;// 倒
-	valve_num[7]  = (pcdata[ctrlBase + 3] >> 1) & 0x01;// 伸缩
-	valve_num[9] = (pcdata[ctrlBase + 3] >> 2) & 0x01;// 夹
-	valve_num[8]  = (pcdata[ctrlBase + 3] >> 3) & 0x01;// 压块
-	valve_num[14]  = (pcdata[ctrlBase + 3] >> 4) & 0x01;// 缓冲
-	valve_num[10] = (pcdata[ctrlBase + 3] >> 5) & 0x01;//
-	valve_num[3] = (pcdata[ctrlBase + 3] >> 6) & 0x01;// 从动
-	valve_num[11] = (pcdata[ctrlBase + 3] >> 7) & 0x01;// 夹爪
-	
-	shoulderTar.mode       = (pcdata[ctrlBase + 4] >> 0) & 0x03;
-	elbowTar.mode = (pcdata[ctrlBase + 4] >> 2) & 0x03;
-	wristTar.mode      = (pcdata[ctrlBase + 4] >> 4) & 0x03;
 
-	valve_num[0] = (pcdata[ctrlBase + 5] >> 0) & 0x01;//红外1
-	valve_num[5] = (pcdata[ctrlBase + 5] >> 1) & 0x01;//红外2
+	leg1Tar.mode = (pcdata[ctrlBase + 3] >> 0) & 0x03;
+	leg2Tar.mode = (pcdata[ctrlBase + 3] >> 2) & 0x03;
+	
+	/* 与 PC 侧 txDataMcu[5]/[6] 的 2bit 打包对齐 */
+	valve_num[1]  = (pcdata[ctrlBase + 4] >> 0) & 0x03;
+	valve_num[2]  = (pcdata[ctrlBase + 4] >> 2) & 0x03;
+
+	light_mode[0] = (pcdata[ctrlBase + 5] >> 0) & 0x07;
+	light_mode[1] = (pcdata[ctrlBase + 5] >> 3) & 0x07;
+
+
+	// valve_num[9] = (pcdata[ctrlBase + 3] >> 2) & 0x01;// 夹
+	// valve_num[8]  = (pcdata[ctrlBase + 3] >> 3) & 0x01;// 压块
+	// valve_num[14]  = (pcdata[ctrlBase + 3] >> 4) & 0x01;// 缓冲
+	// valve_num[10] = (pcdata[ctrlBase + 3] >> 5) & 0x01;//
+	// valve_num[3] = (pcdata[ctrlBase + 3] >> 6) & 0x01;// 从动
+	// valve_num[11] = (pcdata[ctrlBase + 3] >> 7) & 0x01;// 夹爪
+	
+	// shoulderTar.mode       = (pcdata[ctrlBase + 4] >> 0) & 0x03;
+	// elbowTar.mode = (pcdata[ctrlBase + 4] >> 2) & 0x03;
+	// wristTar.mode      = (pcdata[ctrlBase + 4] >> 4) & 0x03;
+
+	// valve_num[0] = (pcdata[ctrlBase + 5] >> 0) & 0x01;//红外1
+	// valve_num[5] = (pcdata[ctrlBase + 5] >> 1) & 0x01;//红外2
 	//联合体接收
 	for(uint16_t i = USB_RX_UINT8_NUM + ctrlBase; i < USB_RX_LEN - 2; i++)
 	{
@@ -520,88 +528,80 @@ void GetPCMsg(const uint8_t *data, uint16_t len)
 	}
 	
 	gRobot.periodCntPC = RX_Data.dataint32[0];//PC运行时间
-	leg1Tar.pos = RX_Data.dataf[1];
-	leg1Tar.vel = RX_Data.dataf[2];
-	leg1Tar.tor = RX_Data.dataf[3];
-	leg1Tar.pos_kp = RX_Data.dataf[4] * 60.0;
-	leg1Tar.pos_kd = RX_Data.dataf[5] * 0.1;
-	leg1Tar.vel_kp = RX_Data.dataf[6];
-	leg1Tar.vel_ki = RX_Data.dataf[7];
+	screw1Tar.pos = RX_Data.dataf[1];
+	screw1Tar.vel = RX_Data.dataf[2];
+	screw1Tar.tor = RX_Data.dataf[3];
+	screw1Tar.pos_kp = RX_Data.dataf[4];
+	screw1Tar.pos_kd = RX_Data.dataf[5];
+	screw1Tar.vel_kp = RX_Data.dataf[6];
+	screw1Tar.vel_ki = RX_Data.dataf[7];
 
-	leg2Tar.pos = RX_Data.dataf[8];
-	leg2Tar.vel = RX_Data.dataf[9];
-	leg2Tar.tor = RX_Data.dataf[10];
-	leg2Tar.pos_kp = RX_Data.dataf[11] * 60.0;
-	leg2Tar.pos_kd = RX_Data.dataf[12] * 0.1;
-	leg2Tar.vel_kp = RX_Data.dataf[13];
-	leg2Tar.vel_ki = RX_Data.dataf[14];
+	screw2Tar.pos = RX_Data.dataf[8];
+	screw2Tar.vel = RX_Data.dataf[9];
+	screw2Tar.tor = RX_Data.dataf[10];
+	screw2Tar.pos_kp = RX_Data.dataf[11];
+	screw2Tar.pos_kd = RX_Data.dataf[12];
+	screw2Tar.vel_kp = RX_Data.dataf[13];
+	screw2Tar.vel_ki = RX_Data.dataf[14];
 
-	leg3Tar.pos = RX_Data.dataf[15];
-	leg3Tar.vel = RX_Data.dataf[16];
-	leg3Tar.tor = RX_Data.dataf[17];
-	leg3Tar.pos_kp = RX_Data.dataf[18] * 60.0;
-	leg3Tar.pos_kd = RX_Data.dataf[19] * 0.1;
-	leg3Tar.vel_kp = RX_Data.dataf[20];
-	leg3Tar.vel_ki = RX_Data.dataf[21];
+	wheel1Tar.pos = RX_Data.dataf[15];
+	wheel1Tar.vel = RX_Data.dataf[16];
+	wheel1Tar.tor = RX_Data.dataf[17];
+	wheel1Tar.pos_kp = RX_Data.dataf[18];
+	wheel1Tar.pos_kd = RX_Data.dataf[19];
+	wheel1Tar.vel_kp = RX_Data.dataf[20];
+	wheel1Tar.vel_ki = RX_Data.dataf[21];
 
-	leg4Tar.pos = RX_Data.dataf[22];
-	leg4Tar.vel = RX_Data.dataf[23];
-	leg4Tar.tor = RX_Data.dataf[24];
-	leg4Tar.pos_kp = RX_Data.dataf[25] * 60.0;
-	leg4Tar.pos_kd = RX_Data.dataf[26] * 0.1;
-	leg4Tar.vel_kp = RX_Data.dataf[27];
-	leg4Tar.vel_ki = RX_Data.dataf[28];
+	wheel2Tar.pos = RX_Data.dataf[22];
+	wheel2Tar.vel = RX_Data.dataf[23];
+	wheel2Tar.tor = RX_Data.dataf[24];
+	wheel2Tar.pos_kp = RX_Data.dataf[25];
+	wheel2Tar.pos_kd = RX_Data.dataf[26];
+	wheel2Tar.vel_kp = RX_Data.dataf[27];
+	wheel2Tar.vel_ki = RX_Data.dataf[28];
 
-	shoulderTar.pos = RX_Data.dataf[29];
-	shoulderTar.vel = RX_Data.dataf[30];
-	shoulderTar.tor = RX_Data.dataf[31];
-	shoulderTar.pos_kp = RX_Data.dataf[32] * 60.0;
-	shoulderTar.pos_kd = RX_Data.dataf[33] * 0.1;
-	shoulderTar.vel_kp = RX_Data.dataf[34];
-	shoulderTar.vel_ki = RX_Data.dataf[35];
+	wheel3Tar.pos = RX_Data.dataf[29];
+	wheel3Tar.vel = RX_Data.dataf[30];
+	wheel3Tar.tor = RX_Data.dataf[31];
+	wheel3Tar.pos_kp = RX_Data.dataf[32];
+	wheel3Tar.pos_kd = RX_Data.dataf[33];
+	wheel3Tar.vel_kp = RX_Data.dataf[34];
+	wheel3Tar.vel_ki = RX_Data.dataf[35];
+
+	wheel4Tar.pos = RX_Data.dataf[36];
+	wheel4Tar.vel = RX_Data.dataf[37];
+	wheel4Tar.tor = RX_Data.dataf[38];
+	wheel4Tar.pos_kp = RX_Data.dataf[39];
+	wheel4Tar.pos_kd = RX_Data.dataf[40];
+	wheel4Tar.vel_kp = RX_Data.dataf[41];
+	wheel4Tar.vel_ki = RX_Data.dataf[42];
+
+	leg1Tar.pos = RX_Data.dataf[43];
+	leg1Tar.vel = RX_Data.dataf[44];
+	leg1Tar.tor = RX_Data.dataf[45];
+	leg1Tar.pos_kp = RX_Data.dataf[46];
+	leg1Tar.pos_kd = RX_Data.dataf[47];
+	leg1Tar.vel_kp = RX_Data.dataf[48];
+	leg1Tar.vel_ki = RX_Data.dataf[49];
+
+	leg2Tar.pos = RX_Data.dataf[50];
+	leg2Tar.vel = RX_Data.dataf[51];
+	leg2Tar.tor = RX_Data.dataf[52];
+	leg2Tar.pos_kp = RX_Data.dataf[53];
+	leg2Tar.pos_kd = RX_Data.dataf[54];
+	leg2Tar.vel_kp = RX_Data.dataf[55];
+	leg2Tar.vel_ki = RX_Data.dataf[56];
+
+	wheel1Tar.clean = RX_Data.dataf[57];
+	wheel2Tar.clean = RX_Data.dataf[58];
+	wheel3Tar.clean = RX_Data.dataf[59];
+	wheel4Tar.clean = RX_Data.dataf[60];
+	leg1Tar.clean = RX_Data.dataf[61];
+	leg2Tar.clean = RX_Data.dataf[62];
+	screw1Tar.clean = RX_Data.dataf[63];
+	screw2Tar.clean = RX_Data.dataf[64];
 	
-	elbowTar.pos = RX_Data.dataf[36] * 2.0 * PI;
-	elbowTar.vel = RX_Data.dataf[37] * 2.0 * PI;
-	
-	wristTar.pos = RX_Data.dataf[38] * 2.0 * PI;
-	wristTar.vel = RX_Data.dataf[39] * 2.0 * PI;
 
-	wheel1Tar.pos = RX_Data.dataf[40];
-	wheel1Tar.vel = RX_Data.dataf[41];
-	wheel1Tar.tor = RX_Data.dataf[42];
-	wheel1Tar.pos_kp = RX_Data.dataf[43];
-	wheel1Tar.pos_kd = RX_Data.dataf[44];
-	wheel1Tar.vel_kp = RX_Data.dataf[45];
-	wheel1Tar.vel_ki = RX_Data.dataf[46];
-
-	wheel2Tar.pos = RX_Data.dataf[47];
-	wheel2Tar.vel = RX_Data.dataf[48];
-	wheel2Tar.tor = RX_Data.dataf[49];
-	wheel2Tar.pos_kp = RX_Data.dataf[50];
-	wheel2Tar.pos_kd = RX_Data.dataf[51];
-	wheel2Tar.vel_kp = RX_Data.dataf[52];
-	wheel2Tar.vel_ki = RX_Data.dataf[53];
-
-	wheel3Tar.pos = RX_Data.dataf[54];
-	wheel3Tar.vel = RX_Data.dataf[55];
-	wheel3Tar.tor = RX_Data.dataf[56];
-	wheel3Tar.pos_kp = RX_Data.dataf[57];
-	wheel3Tar.pos_kd = RX_Data.dataf[58];
-	wheel3Tar.vel_kp = RX_Data.dataf[59];
-	wheel3Tar.vel_ki = RX_Data.dataf[60];
-
-	wheel4Tar.pos = RX_Data.dataf[61];
-	wheel4Tar.vel = RX_Data.dataf[62];
-	wheel4Tar.tor = RX_Data.dataf[63];
-	wheel4Tar.pos_kp = RX_Data.dataf[64];
-	wheel4Tar.pos_kd = RX_Data.dataf[65];
-	wheel4Tar.vel_kp = RX_Data.dataf[66];
-	wheel4Tar.vel_ki = RX_Data.dataf[67];
-
-	wheel1Tar.clean = RX_Data.dataf[68];
-	wheel2Tar.clean = RX_Data.dataf[69];
-	wheel3Tar.clean = RX_Data.dataf[70];
-	wheel4Tar.clean = RX_Data.dataf[71];
 	
 	memset(pcdata, 0, sizeof(pcdata));
 }
@@ -616,88 +616,58 @@ void SendPCMsg(void)
 	data[1] = frame_header_write2;
 	data[USB_TX_LEN-2] = frame_tail_write1;//帧尾2位
 	data[USB_TX_LEN-1] = frame_tail_write2;
-	
+
 	//心跳包
 	data[2] = HB.PC;
-	data[3] = HB.leg1;
-	data[4] = HB.leg2;
-	data[5] = HB.leg3;
-	data[6] = HB.leg4;
-	data[7] = HB.wheel1;
-	data[8] = HB.wheel2;
-	data[9] = HB.wheel3;
-	data[10]= HB.wheel4;
-	data[11]= HB.shoulder;
-	data[12]= HB.elbow;
-	data[13]= HB.wrist;
-	data[14] = (ps_num[7] & 0x01) << 0 | (ps_num[11] & 0x01) << 1 |
-							(ps_num[9] & 0x01) << 2 | (ps_num[3] & 0x01) << 3 |
-							(ps_num[4] & 0x01) << 4 | (ps_num[8] & 0x01) << 5 |
-							(ps_num[12] & 0x01) << 6 | (ps_num[13] & 0x01) << 7;
-	data[15] = (ps_num[2] & 0x01) << 0 | (ps_num[1] & 0x01) << 1 | //  行程开关车尾
-							(ps_num[0] & 0x01) << 2 | (ps_num[14] & 0x01) << 3 |//  左侧 右侧
-							(ps_num[10] & 0x01) << 4 | (ps_num[5] & 0x01) << 5 |// 行程开关车头（右左）
-							(ps_num[6] & 0x01) << 6;// 爪子
-	data[16] = (ps_num_2[5] & 0x01) << 0 | (ps_num_2[13] & 0x01) << 1 | // 看R1(右左)
-							(ps_num_2[0] & 0x01) << 2 | (ps_num_2[4] & 0x01) << 3; //侧边行程开关（前后）
-	data[17] = gRobot.reset_flag;
+	data[3] = HB.screw1;
+	data[4] = HB.screw2;
+	data[5] = HB.wheel1;
+	data[6] = HB.wheel2;
+	data[7] = HB.wheel3;
+	data[8]= HB.wheel4;
+	data[9] = HB.leg1;
+	data[10] = HB.leg2;
 
-	data[18] = leg1Msg.error;
-	data[19] = leg2Msg.error;
-	data[20] = leg3Msg.error;
-	data[21] = leg4Msg.error;
-	data[22] = wheel1Msg.error;
-	data[23] = wheel2Msg.error;
-	data[24] = wheel3Msg.error;
-	data[25] = wheel4Msg.error;
-	data[26] = shoulderMsg.error;
+	data[11] = screw1Msg.error;
+	data[12] = screw2Msg.error;
+	data[13] = wheel1Msg.error;
+	data[14] = wheel2Msg.error;
+	data[15] = wheel3Msg.error;
+	data[16] = wheel4Msg.error;
+	data[17] = leg1Msg.error;
+	data[18] = leg2Msg.error;
 
-	data[27] = leg1Msg.enableState;
-	data[28] = leg2Msg.enableState;
-	data[29] = leg3Msg.enableState;
-	data[30] = leg4Msg.enableState;
+	TX_Data.data_float[0] = screw1Msg.pos;
+	TX_Data.data_float[1] = screw1Msg.vel;
+	TX_Data.data_float[2] = screw1Msg.currQ;
 
-	TX_Data.data_float[1] = leg1Msg.pos;
-	TX_Data.data_float[2] = leg1Msg.vel;
-	TX_Data.data_float[3] = leg1Msg.currQ;
+	TX_Data.data_float[3] = screw2Msg.pos;
+	TX_Data.data_float[4] = screw2Msg.vel;
+	TX_Data.data_float[5] = screw2Msg.currQ;
 
-	TX_Data.data_float[4] = leg2Msg.pos;
-	TX_Data.data_float[5] = leg2Msg.vel;
-	TX_Data.data_float[6] = leg2Msg.currQ;
+	TX_Data.data_float[6] = wheel1Msg.pos;
+	TX_Data.data_float[7] = wheel1Msg.vel;
+	TX_Data.data_float[8] = wheel1Msg.currQ;
 
-	TX_Data.data_float[7] = leg3Msg.pos;
-	TX_Data.data_float[8] = leg3Msg.vel;
-	TX_Data.data_float[9] = leg3Msg.currQ;
-	
-	TX_Data.data_float[10] = leg4Msg.pos;
-	TX_Data.data_float[11] = leg4Msg.vel;
-	TX_Data.data_float[12] = leg4Msg.currQ;
+	TX_Data.data_float[9] = wheel2Msg.pos;
+	TX_Data.data_float[10] = wheel2Msg.vel;
+	TX_Data.data_float[11] = wheel2Msg.currQ;
 
-	TX_Data.data_float[13] = wheel1Msg.pos;
-	TX_Data.data_float[14] = wheel1Msg.vel;
-	TX_Data.data_float[15] = wheel1Msg.currQ;
+	TX_Data.data_float[12] = wheel3Msg.pos;
+	TX_Data.data_float[13] = wheel3Msg.vel;
+	TX_Data.data_float[14] = wheel3Msg.currQ;
 
-	TX_Data.data_float[16] = wheel2Msg.pos;
-	TX_Data.data_float[17] = wheel2Msg.vel;
-	TX_Data.data_float[18] = wheel2Msg.currQ;
+	TX_Data.data_float[15] = wheel4Msg.pos;
+	TX_Data.data_float[16] = wheel4Msg.vel;
+	TX_Data.data_float[17] = wheel4Msg.currQ;
 
-	TX_Data.data_float[19] = wheel3Msg.pos;
-	TX_Data.data_float[20] = wheel3Msg.vel;
-	TX_Data.data_float[21] = wheel3Msg.currQ;
+	TX_Data.data_float[18] = leg1Msg.pos;
+	TX_Data.data_float[19] = leg1Msg.vel;
+	TX_Data.data_float[20] = leg1Msg.currQ;
 
-	TX_Data.data_float[22] = wheel4Msg.pos;
-	TX_Data.data_float[23] = wheel4Msg.vel;
-	TX_Data.data_float[24] = wheel4Msg.currQ;
-	
-	TX_Data.data_float[25] = shoulderMsg.pos;
-	TX_Data.data_float[26] = shoulderMsg.vel;
-	TX_Data.data_float[27] = shoulderMsg.currQ;
-	
-	TX_Data.data_float[28] = elbowMsg.pos / 2.f / PI;
-	TX_Data.data_float[29] = elbowMsg.vel / 2.f / PI;
-	
-	TX_Data.data_float[30] = wristMsg.pos / 2.f / PI;
-	TX_Data.data_float[31] = wristMsg.vel / 2.f / PI;     
+	TX_Data.data_float[21] = leg2Msg.pos;
+	TX_Data.data_float[22] = leg2Msg.vel;
+	TX_Data.data_float[23] = leg2Msg.currQ;
 
 	//联合体发送
 	for(uint16_t i = (uint16_t)(2 + USB_TX_UINT8_NUM); i < (uint16_t)(USB_TX_LEN - 2); i++)
@@ -707,7 +677,17 @@ void SendPCMsg(void)
 
 	UsbTx_Send(data, USB_TX_LEN, 0U);
 }
-
+// data[14] = (ps_num[7] & 0x01) << 0 | (ps_num[11] & 0x01) << 1 |
+	// 						(ps_num[9] & 0x01) << 2 | (ps_num[3] & 0x01) << 3 |
+	// 						(ps_num[4] & 0x01) << 4 | (ps_num[8] & 0x01) << 5 |
+	// 						(ps_num[12] & 0x01) << 6 | (ps_num[13] & 0x01) << 7;
+	// data[15] = (ps_num[2] & 0x01) << 0 | (ps_num[1] & 0x01) << 1 | //  行程开关车尾
+	// 						(ps_num[0] & 0x01) << 2 | (ps_num[14] & 0x01) << 3 |//  左侧 右侧
+	// 						(ps_num[10] & 0x01) << 4 | (ps_num[5] & 0x01) << 5 |// 行程开关车头（右左）
+	// 						(ps_num[6] & 0x01) << 6;// 爪子
+	// data[16] = (ps_num_2[5] & 0x01) << 0 | (ps_num_2[13] & 0x01) << 1 | // 看R1(右左)
+	// 						(ps_num_2[0] & 0x01) << 2 | (ps_num_2[4] & 0x01) << 3; //侧边行程开关（前后）
+	// data[17] = gRobot.reset_flag;
 /**
  * @brief  USB 发送任务
  * @param argument 任务参数

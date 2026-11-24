@@ -1,7 +1,7 @@
 #include "vofa.h"
 
 #define MAX_BUFFER_SIZE 1024
-#define VOFA_PORT       huart8
+#define VOFA_PORT       huart5
 uint8_t send_buf[MAX_BUFFER_SIZE] __attribute__((section(".ram_d2"), aligned(32)));
 
 #define MAX_FLOAT_COUNT 16 // 假设最多支持16个浮点数（根据实际需求可以修改）

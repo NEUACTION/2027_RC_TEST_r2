@@ -769,3 +769,26 @@ HAL_StatusTypeDef SetDriverZero(FDCAN_HandleTypeDef *hfdcan, CommandMode CMDmode
 
     return User_FDCAN_SendMsg(hfdcan, data, 32, canId, 0);
 }
+
+HAL_StatusTypeDef SetTor(FDCAN_HandleTypeDef *hfdcan, CommandMode CMDmode, uint8_t DriverNum, float tor)
+{
+    uint32_t canId    = DRIVER_SERVER_BASE_ID + CMDmode + DriverNum;
+    uint8_t  data[32] = {0};
+
+    if (fabs(tor) > 50.0f)
+    {
+        data[0] = IDENTIFIER_SILENCE;
+    }
+    else
+    {
+        data[0] = IDENTIFIER_SET_FEEDFORWARD_CURR;
+        float curr_send = tor * 1000.0f;
+        memcpy(&data[1], &curr_send, sizeof(curr_send)); // data[9..12] = float
+    }   
+
+    data[8] = IDENTIFIER_READ_OFFSET + IDENTIFIER_RETURN_MSG;
+    data[16] = IDENTIFIER_SILENCE;
+    data[24] = IDENTIFIER_SILENCE;
+    
+    return User_FDCAN_SendMsg(hfdcan, data, 32, canId, 0);
+}

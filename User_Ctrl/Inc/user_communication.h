@@ -9,10 +9,12 @@ extern "C" {
 
 #define MAX_GET_LEN (1024)
 
-#define USB_RX_UINT8_NUM (10)
-#define USB_RX_DATA_NUM  (77)
-#define USB_TX_UINT8_NUM (29)
-#define USB_TX_DATA_NUM  (43)
+/* PC→MCU 控制区：[2]=run flag，[3]=screw1/2 mode，[4]=wheel1~4 mode，
+ * [5]=valve1/2，[6]=rgb_flag1/2，共 5 字节 */
+#define USB_RX_UINT8_NUM (5)
+#define USB_RX_DATA_NUM  (65)
+#define USB_TX_UINT8_NUM (17)
+#define USB_TX_DATA_NUM  (24)
 
 #define USB_RX_LEN (USB_RX_DATA_NUM*4 + USB_RX_UINT8_NUM+4)
 #define USB_TX_LEN (USB_TX_DATA_NUM*4 + USB_TX_UINT8_NUM+4)

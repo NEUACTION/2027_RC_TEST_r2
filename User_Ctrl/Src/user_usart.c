@@ -10,7 +10,6 @@
 /* DMA RX 缓冲区：对齐 32B 方便 DCache 操作 */
 #define UART8_RX_DMA_BUF_SIZE          (1024U)
 #define UART8_RX_STREAM_BUF_SIZE       (1024U)
-
 uint8_t debug_buffer[DEBUG_BUFFER_SIZE] __attribute__((section(".ram_d2"), aligned(32)));
 
 static uint8_t s_uart8_rx_dma_buf[UART8_RX_DMA_BUF_SIZE] __attribute__((section(".ram_d2"), aligned(32)));
@@ -29,6 +28,9 @@ uint8_t ps_num_2[PS_RX_LEN - 4] = {0};
 uint8_t valve_txbuffer[VALVE_TX_LEN] = {};
 uint8_t valve_num[VALVE_TX_LEN - 4] = {0};
 
+uint8_t light_txbuffer[LIGHT_TX_LEN] = {};
+uint8_t light_num[LIGHT_TX_LEN - 4] = {0};
+uint8_t light_mode[2] = {0};
 /* PS(UART5) RX：用队列把“完整帧”从 ISR 投递到任务，避免在回调里做解析/写共享数据 */
 #define PS_RX_QUEUE_LEN               (4U)
 static StaticQueue_t s_ps_rx_queue_static;
@@ -217,6 +219,18 @@ void SendValve(void)
 	HAL_UART_Transmit_IT(&VALVE_UART, (uint8_t *)valve_txbuffer, VALVE_TX_LEN);
 }
 
+void SendLight(void)
+{
+    light_txbuffer[0] = 'I';
+    light_txbuffer[1] = 'O';																														
+    light_txbuffer[LIGHT_TX_LEN - 2] = '\r';
+    light_txbuffer[LIGHT_TX_LEN - 1] = '\n';
+	for (int i = 0; i < LIGHT_TX_LEN - 4; i++)
+	{
+		light_txbuffer[i + 2] = light_num[i];
+	}
+    HAL_UART_Transmit_IT(&LIGHT_UART, (uint8_t *)light_txbuffer, LIGHT_TX_LEN);
+}
 void SendPs(void)
 {
 	ps_txbuffer[0] = 'I';

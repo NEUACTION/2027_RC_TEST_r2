@@ -132,6 +132,7 @@ HAL_StatusTypeDef SetLimits(FDCAN_HandleTypeDef *hfdcan, CommandMode CMDmode, ui
 HAL_StatusTypeDef SetVelAcc(FDCAN_HandleTypeDef *hfdcan, CommandMode CMDmode, uint8_t DriverNum, int32_t AccLimit, int32_t DecLimit);
 HAL_StatusTypeDef PVTCtrl(FDCAN_HandleTypeDef *hfdcan, uint8_t DriverNum, float pos, float vel, float kp, float kd, float t);
 HAL_StatusTypeDef SetDriverZero(FDCAN_HandleTypeDef *hfdcan, CommandMode CMDmode, uint8_t DriverNum);
+HAL_StatusTypeDef SetTor(FDCAN_HandleTypeDef *hfdcan, CommandMode CMDmode, uint8_t DriverNum, float tor);
 /*----------------------------------------------------------------------*/
 
 HAL_StatusTypeDef ReadPVT(FDCAN_HandleTypeDef *hfdcan, CommandMode CMDmode, uint8_t DriverNum);

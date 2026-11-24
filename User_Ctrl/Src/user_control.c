@@ -3,9 +3,9 @@
 
 Heart_t HB;
 
-driverMsg_t leg1Msg, leg2Msg, leg3Msg, leg4Msg, wheel1Msg, wheel2Msg, wheel3Msg, wheel4Msg, shoulderMsg, elbowMsg, wristMsg;
+driverMsg_t screw1Msg, screw2Msg, wheel1Msg, wheel2Msg, wheel3Msg, wheel4Msg,leg1Msg,leg2Msg;
 
-motorTarget_t leg1Tar, leg2Tar, leg3Tar, leg4Tar, wheel1Tar, wheel2Tar, wheel3Tar, wheel4Tar, shoulderTar, elbowTar, wristTar;
+motorTarget_t screw1Tar, screw2Tar, wheel1Tar, wheel2Tar, wheel3Tar, wheel4Tar, leg1Tar, leg2Tar;
 
 DriverMsgsSnapshot_t driverMsgs;
 
@@ -23,17 +23,14 @@ void User_Control_GetDriverMsgsSnapshot(DriverMsgsSnapshot_t *out)
 	/* 关中断拷贝，避免结构体撕裂（rxTask 正在更新时被读到一半） */
 	taskENTER_CRITICAL();
 	{
-		out->leg1Msg  = leg1Msg;
-        out->leg2Msg  = leg2Msg;
-        out->leg3Msg  = leg3Msg;
-        out->leg4Msg  = leg4Msg;
+		out->screw1Msg  = screw1Msg;
+        out->screw2Msg  = screw2Msg;
         out->wheel1Msg  = wheel1Msg;
         out->wheel2Msg  = wheel2Msg;
         out->wheel3Msg  = wheel3Msg;
         out->wheel4Msg  = wheel4Msg;
-        out->shoulderMsg  = shoulderMsg;
-        out->elbowMsg  = elbowMsg;
-        out->wristMsg  = wristMsg;
+		out->leg1Msg = leg1Msg;
+		out->leg2Msg = leg2Msg;
 		out->tick = (uint32_t)xTaskGetTickCount();
 	}
 	taskEXIT_CRITICAL();
@@ -44,33 +41,19 @@ void User_Control_GetDriverMsgsSnapshot(DriverMsgsSnapshot_t *out)
  */
 void RobotInit(void)
 {
-    leg1Msg.enableState = DISABLE;
-    leg1Msg.driverMode  = DISABLE;
-    leg1Tar.mode = DISABLE;
-    leg1Tar.last_mode = DISABLE;
-    leg1Msg.enable_error = 0;
-    leg1Tar.clean = 0;
+    screw1Msg.enableState = DISABLE;
+    screw1Msg.driverMode  = DISABLE;
+    screw1Tar.mode = DISABLE;
+    screw1Tar.last_mode = DISABLE;
+    screw1Msg.enable_error = 0;
+    screw1Tar.clean = 0;
 
-    leg2Msg.enableState = DISABLE;
-    leg2Msg.driverMode  = DISABLE;
-    leg2Tar.mode = DISABLE;
-    leg2Tar.last_mode = DISABLE;
-    leg2Msg.enable_error = 0;
-    leg2Tar.clean = 0;
-
-    leg3Msg.enableState = DISABLE;
-    leg3Msg.driverMode  = DISABLE;
-    leg3Tar.mode = DISABLE;
-    leg3Tar.last_mode = DISABLE;
-    leg3Msg.enable_error = 0;
-    leg3Tar.clean = 0;
-    
-    leg4Msg.enableState = DISABLE;
-    leg4Msg.driverMode  = DISABLE;
-    leg4Tar.mode = DISABLE;
-    leg4Tar.last_mode = DISABLE;
-    leg4Msg.enable_error = 0;
-    leg4Tar.clean = 0;
+    screw2Msg.enableState = DISABLE;
+    screw2Msg.driverMode  = DISABLE;
+    screw2Tar.mode = DISABLE;
+    screw2Tar.last_mode = DISABLE;
+    screw2Msg.enable_error = 0;
+    screw2Tar.clean = 0;
 
     wheel1Msg.enableState = DISABLE;
     wheel1Msg.driverMode  = DISABLE;
@@ -116,24 +99,28 @@ void RobotInit(void)
     wheel4Msg.enable_error = 0;
     wheel4Tar.clean = 0;
 
-    shoulderMsg.enableState = ENABLE;
-    shoulderMsg.driverMode  = POS_MODE;
-    shoulderTar.mode = POS_MODE;
-    shoulderTar.last_mode = POS_MODE;
-    shoulderMsg.enable_error = 0;
-    shoulderTar.clean = 0;
+    leg1Msg.enableState = DISABLE;
+    leg1Msg.driverMode  = DISABLE;
+    leg1Tar.mode = DISABLE;
+    leg1Tar.last_mode = DISABLE;
+    leg1Tar.vel_kp = -1;
+    leg1Tar.last_vel_kp = -1;
+    leg1Tar.vel_ki = -1;
+    leg1Tar.last_vel_ki = -1;
+    leg1Msg.enable_error = 0;
+    leg1Tar.clean = 0;
 
-    elbowMsg.enableState = ENABLE;
-    elbowMsg.driverMode  = POS_MODE;
-    elbowTar.mode = POS_MODE;
-    elbowTar.last_mode = POS_MODE;
-    elbowTar.clean = 0;
+    leg2Msg.enableState = DISABLE;
+    leg2Msg.driverMode  = DISABLE;
+    leg2Tar.mode = DISABLE;
+    leg2Tar.last_mode = DISABLE;
+    leg2Tar.vel_kp = -1;
+    leg2Tar.last_vel_kp = -1;
+    leg2Tar.vel_ki = -1;
+    leg2Tar.last_vel_ki = -1;
+    leg2Msg.enable_error = 0;
+    leg2Tar.clean = 0;
 
-    wristMsg.enableState = ENABLE;
-    wristMsg.driverMode  = POS_MODE;
-    wristTar.mode = POS_MODE;
-    wristTar.last_mode = POS_MODE;
-    wristTar.clean = 0;
 }
 
 /**
@@ -306,18 +293,15 @@ void DriverControl(FDCAN_HandleTypeDef *hfdcan, uint32_t driverNum, motorTarget_
  */
 void HB_Add(void)
 {
-	if(HB.leg1 <= 200)HB.leg1 ++;
-    if(HB.leg2 <= 200)HB.leg2 ++;
-    if(HB.leg3 <= 200)HB.leg3 ++;
-    if(HB.leg4 <= 200)HB.leg4 ++;
+	if(HB.screw1 <= 200)HB.screw1 ++;
+    if(HB.screw2 <= 200)HB.screw2 ++;
     if(HB.wheel1 <= 200)HB.wheel1 ++;
     if(HB.wheel2 <= 200)HB.wheel2 ++;
     if(HB.wheel3 <= 200)HB.wheel3 ++;
     if(HB.wheel4 <= 200)HB.wheel4 ++;
-    if(HB.shoulder <= 200)HB.shoulder ++;
-    if(HB.elbow <= 200)HB.elbow ++;
-    if(HB.wrist <= 200)HB.wrist ++;
-	if(HB.PC <= 200)HB.PC ++;
+    if(HB.leg1 <= 200)HB.leg1 ++;
+    if(HB.leg2 <= 200)HB.leg2 ++;
+   	if(HB.PC <= 200)HB.PC ++;
     if(HB.op <= 200)HB.op ++;
 }
 

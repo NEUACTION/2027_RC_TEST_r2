@@ -10,7 +10,7 @@ extern "C" {
 
 
 // DEBUG 发数用
-#define DEBUG_UART_HANDLER             (huart5)          
+#define DEBUG_UART_HANDLER             (huart8)          
 #define DEBUG_BUFFER_SIZE              (4096)
 extern uint8_t debug_buffer[DEBUG_BUFFER_SIZE];
 
@@ -23,9 +23,15 @@ extern uint8_t debug_buffer[DEBUG_BUFFER_SIZE];
     }\
 }
 
-#define VALVE_UART		huart2
+#define VALVE_UART		huart5
 #define VALVE_TX_LEN	19
 extern uint8_t valve_num[VALVE_TX_LEN - 4];
+
+#define LIGHT_UART		huart2
+#define LIGHT_TX_LEN	10
+extern uint8_t light_num[LIGHT_TX_LEN - 4];
+extern uint8_t light_mode[2];
+extern uint8_t byte_a[5];
 
 #define PS_UART			huart7
 #define PS_RX_LEN 	    20
@@ -54,6 +60,7 @@ void SendPs(void);
 void GetPSNum(void);
 void GetPSNum2(void);
 void USART_ENABLE(void);
+void SendLight(void);
 
 #ifdef __cplusplus
 }
