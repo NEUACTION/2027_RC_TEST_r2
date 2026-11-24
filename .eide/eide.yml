@@ -1,5 +1,5 @@
 version: "4.1"
-name: 2026_RC_TEST
+name: 2027_RC_TEST_r2
 type: ARM
 deviceName: STM32H723VGTx
 packDir: .pack/Keil/STM32H7xx_DFP.4.1.0
@@ -88,7 +88,7 @@ targets:
     uploadConfigMap:
       JLink:
         baseAddr: ""
-        bin: build/Debug/2026_RC_TEST.hex
+        bin: build/Debug/2027_RC_TEST_r2.hex
         cpuInfo:
           cpuName: STM32H723VG
           vendor: ST
