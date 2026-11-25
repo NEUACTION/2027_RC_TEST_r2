@@ -49,13 +49,24 @@ typedef struct
 {
 	float vel;
 	float pos;	
+    float vel_cur;
+    float pos_cur;
+    float vel_kp;
+    float vel_ki;
+    float pos_kp;
+    float pos_kd;
     DriverState_Mode status;
 }SteeringWheelMsg_t;
+
 
 typedef struct
 {
     float vel;
     float pos;
+    float vel_kp;
+    float vel_ki;
+    float pos_kp;
+    float pos_kd;
     DriverState_Mode status;
     HSV_Cmd hsv; 
 }SteeringWheelTar_t;

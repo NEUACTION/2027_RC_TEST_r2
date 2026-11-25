@@ -492,10 +492,10 @@ void GetPCMsg(const uint8_t *data, uint16_t len)
 	screw2Tar.mode = (pcdata[ctrlBase + 1] >> 2) & 0x03;
 	
 
-	wheel1Tar.mode = (pcdata[ctrlBase + 2] >> 0) & 0x03;
-	wheel2Tar.mode = (pcdata[ctrlBase + 2] >> 2) & 0x03;
-	wheel3Tar.mode = (pcdata[ctrlBase + 2] >> 4) & 0x03;
-	wheel4Tar.mode = (pcdata[ctrlBase + 2] >> 6) & 0x03;
+	wheel1Tar.status = (pcdata[ctrlBase + 2] >> 0) & 0x03;
+	wheel2Tar.status = (pcdata[ctrlBase + 2] >> 2) & 0x03;
+	wheel3Tar.status = (pcdata[ctrlBase + 2] >> 4) & 0x03;
+	wheel4Tar.status = (pcdata[ctrlBase + 2] >> 6) & 0x03;
 
 	leg1Tar.mode = (pcdata[ctrlBase + 3] >> 0) & 0x03;
 	leg2Tar.mode = (pcdata[ctrlBase + 3] >> 2) & 0x03;
@@ -546,60 +546,52 @@ void GetPCMsg(const uint8_t *data, uint16_t len)
 
 	wheel1Tar.pos = RX_Data.dataf[15];
 	wheel1Tar.vel = RX_Data.dataf[16];
-	wheel1Tar.tor = RX_Data.dataf[17];
-	wheel1Tar.pos_kp = RX_Data.dataf[18];
-	wheel1Tar.pos_kd = RX_Data.dataf[19];
-	wheel1Tar.vel_kp = RX_Data.dataf[20];
-	wheel1Tar.vel_ki = RX_Data.dataf[21];
+	wheel1Tar.pos_kp = RX_Data.dataf[17];
+	wheel1Tar.pos_kd = RX_Data.dataf[18];
+	wheel1Tar.vel_kp = RX_Data.dataf[19];
+	wheel1Tar.vel_ki = RX_Data.dataf[20];
 
-	wheel2Tar.pos = RX_Data.dataf[22];
-	wheel2Tar.vel = RX_Data.dataf[23];
-	wheel2Tar.tor = RX_Data.dataf[24];
-	wheel2Tar.pos_kp = RX_Data.dataf[25];
-	wheel2Tar.pos_kd = RX_Data.dataf[26];
-	wheel2Tar.vel_kp = RX_Data.dataf[27];
-	wheel2Tar.vel_ki = RX_Data.dataf[28];
+	wheel2Tar.pos = RX_Data.dataf[21];
+	wheel2Tar.vel = RX_Data.dataf[22];
+	wheel2Tar.pos_kp = RX_Data.dataf[23];
+	wheel2Tar.pos_kd = RX_Data.dataf[24];
+	wheel2Tar.vel_kp = RX_Data.dataf[25];
+	wheel2Tar.vel_ki = RX_Data.dataf[26];
 
-	wheel3Tar.pos = RX_Data.dataf[29];
-	wheel3Tar.vel = RX_Data.dataf[30];
-	wheel3Tar.tor = RX_Data.dataf[31];
-	wheel3Tar.pos_kp = RX_Data.dataf[32];
-	wheel3Tar.pos_kd = RX_Data.dataf[33];
-	wheel3Tar.vel_kp = RX_Data.dataf[34];
-	wheel3Tar.vel_ki = RX_Data.dataf[35];
+	wheel3Tar.pos = RX_Data.dataf[27];
+	wheel3Tar.vel = RX_Data.dataf[28];
+	wheel3Tar.pos_kp = RX_Data.dataf[29];
+	wheel3Tar.pos_kd = RX_Data.dataf[30];
+	wheel3Tar.vel_kp = RX_Data.dataf[31];
+	wheel3Tar.vel_ki = RX_Data.dataf[32];
 
-	wheel4Tar.pos = RX_Data.dataf[36];
-	wheel4Tar.vel = RX_Data.dataf[37];
-	wheel4Tar.tor = RX_Data.dataf[38];
-	wheel4Tar.pos_kp = RX_Data.dataf[39];
-	wheel4Tar.pos_kd = RX_Data.dataf[40];
-	wheel4Tar.vel_kp = RX_Data.dataf[41];
-	wheel4Tar.vel_ki = RX_Data.dataf[42];
+	wheel4Tar.pos = RX_Data.dataf[33];
+	wheel4Tar.vel = RX_Data.dataf[34];
+	wheel4Tar.pos_kp = RX_Data.dataf[35];
+	wheel4Tar.pos_kd = RX_Data.dataf[36];
+	wheel4Tar.vel_kp = RX_Data.dataf[37];
+	wheel4Tar.vel_ki = RX_Data.dataf[38];
 
-	leg1Tar.pos = RX_Data.dataf[43];
-	leg1Tar.vel = RX_Data.dataf[44];
-	leg1Tar.tor = RX_Data.dataf[45];
-	leg1Tar.pos_kp = RX_Data.dataf[46];
-	leg1Tar.pos_kd = RX_Data.dataf[47];
-	leg1Tar.vel_kp = RX_Data.dataf[48];
-	leg1Tar.vel_ki = RX_Data.dataf[49];
+	leg1Tar.pos = RX_Data.dataf[39];
+	leg1Tar.vel = RX_Data.dataf[40];
+	leg1Tar.tor = RX_Data.dataf[41];
+	leg1Tar.pos_kp = RX_Data.dataf[42];
+	leg1Tar.pos_kd = RX_Data.dataf[43];
+	leg1Tar.vel_kp = RX_Data.dataf[44];
+	leg1Tar.vel_ki = RX_Data.dataf[45];
 
-	leg2Tar.pos = RX_Data.dataf[50];
-	leg2Tar.vel = RX_Data.dataf[51];
-	leg2Tar.tor = RX_Data.dataf[52];
-	leg2Tar.pos_kp = RX_Data.dataf[53];
-	leg2Tar.pos_kd = RX_Data.dataf[54];
-	leg2Tar.vel_kp = RX_Data.dataf[55];
-	leg2Tar.vel_ki = RX_Data.dataf[56];
+	leg2Tar.pos = RX_Data.dataf[46];
+	leg2Tar.vel = RX_Data.dataf[47];
+	leg2Tar.tor = RX_Data.dataf[48];
+	leg2Tar.pos_kp = RX_Data.dataf[49];
+	leg2Tar.pos_kd = RX_Data.dataf[50];
+	leg2Tar.vel_kp = RX_Data.dataf[51];
+	leg2Tar.vel_ki = RX_Data.dataf[52];
 
-	wheel1Tar.clean = RX_Data.dataf[57];
-	wheel2Tar.clean = RX_Data.dataf[58];
-	wheel3Tar.clean = RX_Data.dataf[59];
-	wheel4Tar.clean = RX_Data.dataf[60];
-	leg1Tar.clean = RX_Data.dataf[61];
-	leg2Tar.clean = RX_Data.dataf[62];
-	screw1Tar.clean = RX_Data.dataf[63];
-	screw2Tar.clean = RX_Data.dataf[64];
+	leg1Tar.clean = RX_Data.dataf[53];
+	leg2Tar.clean = RX_Data.dataf[54];
+	screw1Tar.clean = RX_Data.dataf[55];
+	screw2Tar.clean = RX_Data.dataf[56];
 	
 
 	
@@ -630,12 +622,13 @@ void SendPCMsg(void)
 
 	data[11] = screw1Msg.error;
 	data[12] = screw2Msg.error;
-	data[13] = wheel1Msg.error;
-	data[14] = wheel2Msg.error;
-	data[15] = wheel3Msg.error;
-	data[16] = wheel4Msg.error;
-	data[17] = leg1Msg.error;
-	data[18] = leg2Msg.error;
+	data[13] = leg1Msg.error;
+	data[14] = leg2Msg.error;
+
+	data[15] = wheel1Msg.status;
+	data[16] = wheel2Msg.status;
+	data[17] = wheel3Msg.status;
+	data[18] = wheel4Msg.status;
 
 	TX_Data.data_float[0] = screw1Msg.pos;
 	TX_Data.data_float[1] = screw1Msg.vel;
@@ -647,28 +640,31 @@ void SendPCMsg(void)
 
 	TX_Data.data_float[6] = wheel1Msg.pos;
 	TX_Data.data_float[7] = wheel1Msg.vel;
-	TX_Data.data_float[8] = wheel1Msg.currQ;
+	TX_Data.data_float[8] = wheel1Msg.pos_cur;
+	TX_Data.data_float[9] = wheel1Msg.vel_cur;
 
-	TX_Data.data_float[9] = wheel2Msg.pos;
-	TX_Data.data_float[10] = wheel2Msg.vel;
-	TX_Data.data_float[11] = wheel2Msg.currQ;
+	TX_Data.data_float[10] = wheel2Msg.pos;
+	TX_Data.data_float[11] = wheel2Msg.vel;
+	TX_Data.data_float[12] = wheel2Msg.pos_cur;
+	TX_Data.data_float[13] = wheel2Msg.vel_cur;
 
-	TX_Data.data_float[12] = wheel3Msg.pos;
-	TX_Data.data_float[13] = wheel3Msg.vel;
-	TX_Data.data_float[14] = wheel3Msg.currQ;
+	TX_Data.data_float[14] = wheel3Msg.pos;
+	TX_Data.data_float[15] = wheel3Msg.vel;
+	TX_Data.data_float[16] = wheel3Msg.pos_cur;
+	TX_Data.data_float[17] = wheel3Msg.vel_cur;
 
-	TX_Data.data_float[15] = wheel4Msg.pos;
-	TX_Data.data_float[16] = wheel4Msg.vel;
-	TX_Data.data_float[17] = wheel4Msg.currQ;
+	TX_Data.data_float[18] = wheel4Msg.pos;
+	TX_Data.data_float[19] = wheel4Msg.vel;
+	TX_Data.data_float[20] = wheel4Msg.pos_cur;
+	TX_Data.data_float[21] = wheel4Msg.vel_cur;
 
-	TX_Data.data_float[18] = leg1Msg.pos;
-	TX_Data.data_float[19] = leg1Msg.vel;
-	TX_Data.data_float[20] = leg1Msg.currQ;
+	TX_Data.data_float[22] = leg1Msg.pos;
+	TX_Data.data_float[23] = leg1Msg.vel;
+	TX_Data.data_float[24] = leg1Msg.currQ;
 
-	TX_Data.data_float[21] = leg2Msg.pos;
-	TX_Data.data_float[22] = leg2Msg.vel;
-	TX_Data.data_float[23] = leg2Msg.currQ;
-
+	TX_Data.data_float[25] = leg2Msg.pos;
+	TX_Data.data_float[26] = leg2Msg.vel;
+	TX_Data.data_float[27] = leg2Msg.currQ;
 	//联合体发送
 	for(uint16_t i = (uint16_t)(2 + USB_TX_UINT8_NUM); i < (uint16_t)(USB_TX_LEN - 2); i++)
 	{

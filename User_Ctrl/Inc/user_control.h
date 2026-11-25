@@ -71,9 +71,12 @@ extern Heart_t HB;
 
 extern gRobot_t gRobot;
 
-extern driverMsg_t screw1Msg, screw2Msg, wheel1Msg, wheel2Msg, wheel3Msg, wheel4Msg ,leg1Msg,leg2Msg;
+extern driverMsg_t screw1Msg, screw2Msg, leg1Msg,leg2Msg;
 
-extern motorTarget_t screw1Tar, screw2Tar, wheel1Tar, wheel2Tar, wheel3Tar, wheel4Tar, leg1Tar, leg2Tar;
+extern motorTarget_t screw1Tar, screw2Tar, leg1Tar, leg2Tar;
+
+extern SteeringWheelTar_t wheel1Tar, wheel2Tar, wheel3Tar, wheel4Tar;
+extern SteeringWheelMsg_t wheel1Msg, wheel2Msg, wheel3Msg, wheel4Msg;
 
 extern int esc;
 
@@ -84,12 +87,12 @@ extern int esc;
  * ------------------------------------------------------------ */
 typedef struct
 {
+	SteeringWheelMsg_t wheel1Msg;
+	SteeringWheelMsg_t wheel2Msg;
+	SteeringWheelMsg_t wheel3Msg;
+	SteeringWheelMsg_t wheel4Msg;
 	driverMsg_t screw1Msg;
 	driverMsg_t screw2Msg;
-	driverMsg_t wheel1Msg;
-	driverMsg_t wheel2Msg;
-	driverMsg_t wheel3Msg;
-	driverMsg_t wheel4Msg;
 	driverMsg_t leg1Msg;
 	driverMsg_t leg2Msg;
 	uint32_t tick;

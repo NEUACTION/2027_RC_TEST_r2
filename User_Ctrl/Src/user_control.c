@@ -3,11 +3,15 @@
 
 Heart_t HB;
 
-driverMsg_t screw1Msg, screw2Msg, wheel1Msg, wheel2Msg, wheel3Msg, wheel4Msg,leg1Msg,leg2Msg;
+driverMsg_t screw1Msg, screw2Msg, leg1Msg, leg2Msg;
 
-motorTarget_t screw1Tar, screw2Tar, wheel1Tar, wheel2Tar, wheel3Tar, wheel4Tar, leg1Tar, leg2Tar;
+motorTarget_t screw1Tar, screw2Tar, leg1Tar, leg2Tar;
 
 DriverMsgsSnapshot_t driverMsgs;
+
+SteeringWheelTar_t wheel1Tar, wheel2Tar, wheel3Tar, wheel4Tar;
+
+SteeringWheelMsg_t wheel1Msg, wheel2Msg, wheel3Msg, wheel4Msg;
 
 gRobot_t gRobot;
 
@@ -41,7 +45,7 @@ void User_Control_GetDriverMsgsSnapshot(DriverMsgsSnapshot_t *out)
  */
 void RobotInit(void)
 {
-    screw1Msg.enableState = DISABLE;
+   screw1Msg.enableState = DISABLE;
     screw1Msg.driverMode  = DISABLE;
     screw1Tar.mode = DISABLE;
     screw1Tar.last_mode = DISABLE;
@@ -55,49 +59,41 @@ void RobotInit(void)
     screw2Msg.enable_error = 0;
     screw2Tar.clean = 0;
 
-    wheel1Msg.enableState = DISABLE;
-    wheel1Msg.driverMode  = DISABLE;
-    wheel1Tar.mode = DISABLE;
-    wheel1Tar.last_mode = DISABLE;
-    wheel1Tar.vel_kp = -1;
-    wheel1Tar.last_vel_kp = -1;
-    wheel1Tar.vel_ki = -1;
-    wheel1Tar.last_vel_ki = -1;
-    wheel1Msg.enable_error = 0;
-    wheel1Tar.clean = 0;
+    wheel1Msg.vel = 0;
+    wheel1Msg.pos = 0;
+    wheel1Msg.vel_cur = 0;
+    wheel1Msg.pos_cur = 0;
+    wheel1Msg.status =  DISABLE_ALL;
+    wheel1Tar.vel = 0;
+    wheel1Tar.pos = 0;
+    wheel1Tar.status = DISABLE_ALL;
 
-    wheel2Msg.enableState = DISABLE;
-    wheel2Msg.driverMode  = DISABLE;
-    wheel2Tar.mode = DISABLE;
-    wheel2Tar.last_mode = DISABLE;
-    wheel2Tar.vel_kp = -1;
-    wheel2Tar.last_vel_kp = -1;
-    wheel2Tar.vel_ki = -1;
-    wheel2Tar.last_vel_ki = -1;
-    wheel2Msg.enable_error = 0;
-    wheel2Tar.clean = 0;
+    wheel2Msg.vel = 0;
+    wheel2Msg.pos = 0;
+    wheel2Msg.vel_cur = 0;
+    wheel2Msg.pos_cur = 0;
+    wheel2Msg.status =  DISABLE_ALL;
+    wheel2Tar.vel = 0;
+    wheel2Tar.pos = 0;
+    wheel2Tar.status = DISABLE_ALL;
 
-    wheel3Msg.enableState = DISABLE;
-    wheel3Msg.driverMode  = DISABLE;
-    wheel3Tar.mode = DISABLE;
-    wheel3Tar.last_mode = DISABLE;
-    wheel3Tar.vel_kp = -1;
-    wheel3Tar.last_vel_kp = -1;
-    wheel3Tar.vel_ki = -1;
-    wheel3Tar.last_vel_ki = -1;
-    wheel3Msg.enable_error = 0;
-    wheel3Tar.clean = 0;
-
-    wheel4Msg.enableState = DISABLE;
-    wheel4Msg.driverMode  = DISABLE;
-    wheel4Tar.mode = DISABLE;
-    wheel4Tar.last_mode = DISABLE;
-    wheel4Tar.vel_kp = -1;
-    wheel4Tar.last_vel_kp = -1;
-    wheel4Tar.vel_ki = -1;
-    wheel4Tar.last_vel_ki = -1;
-    wheel4Msg.enable_error = 0;
-    wheel4Tar.clean = 0;
+    wheel3Msg.vel = 0;
+    wheel3Msg.pos = 0;
+    wheel3Msg.vel_cur = 0;
+    wheel3Msg.pos_cur = 0;
+    wheel3Msg.status =  DISABLE_ALL;
+    wheel3Tar.vel = 0;
+    wheel3Tar.pos = 0;
+    wheel3Tar.status = DISABLE_ALL;
+    
+    wheel4Msg.vel = 0;
+    wheel4Msg.pos = 0;
+    wheel4Msg.vel_cur = 0;
+    wheel4Msg.pos_cur = 0;
+    wheel4Msg.status =  DISABLE_ALL;
+    wheel4Tar.vel = 0;
+    wheel4Tar.pos = 0;
+    wheel4Tar.status = DISABLE_ALL;
 
     leg1Msg.enableState = DISABLE;
     leg1Msg.driverMode  = DISABLE;
@@ -120,6 +116,7 @@ void RobotInit(void)
     leg2Tar.last_vel_ki = -1;
     leg2Msg.enable_error = 0;
     leg2Tar.clean = 0;
+
 
 }
 
