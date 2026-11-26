@@ -377,22 +377,14 @@ void EscControl(void)
 /**
  * @brief 电机控制
  */
-// void MotorControl(void)
-// {
-//     DriverControl(&FDCAN_WL, WHEEL1, &wheel1Tar, &wheel1Msg);
-//     DriverControl(&FDCAN_TK, WHEEL2, &wheel2Tar, &wheel2Msg);
-//     DriverControl(&FDCAN_WL, WHEEL3, &wheel3Tar, &wheel3Msg);
-//     DriverControl(&FDCAN_WL, WHEEL4, &wheel4Tar, &wheel4Msg);
-
-//     DriverControl(&FDCAN_WL, LEG1, &leg1Tar, &leg1Msg);
-//     DriverControl(&FDCAN_TK, LEG2, &leg2Tar, &leg2Msg);
-//     DriverControl(&FDCAN_WL, LEG3, &leg3Tar, &leg3Msg);
-//     DriverControl(&FDCAN_WL, LEG4, &leg4Tar, &leg4Msg);
-
-//     DriverControl(&FDCAN_TK, SHOULDER, &shoulderTar, &shoulderMsg);
-//     DMControl(&FDCAN_TK, WRIST, &wristTar);
-//     DMControl(&FDCAN_TK, ELBOW, &elbowTar);
-// }
+void MotorControl(void)
+{
+    DriverControl(&FDCAN_TK,SCREW1,&screw1Tar,&screw1Msg);
+	DriverControl(&FDCAN_WL,SCREW2,&screw2Tar,&screw2Msg);
+	DriverControl(&FDCAN_TK,LEG1,&leg1Tar,&leg1Msg);
+	DriverControl(&FDCAN_WL,LEG2,&leg2Tar,&leg2Msg);
+    
+}
 
 void RobotControl(void)
 {

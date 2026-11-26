@@ -241,8 +241,7 @@ void User_Task(void *argument)
 		HB_Add();
 		Beep_Control();
 		// if(gRobot.runSucceedFlag)
-		// {
-		// 	// 复位
+		// 复位
 			if(!reset_flag)
 			{
 				SetBeep(100);
@@ -257,10 +256,7 @@ void User_Task(void *argument)
 				SendLight();
 				cnt = 0;
 			}
-			DriverControl(&FDCAN_TK,SCREW1,&screw1Tar,&screw1Msg);
-			DriverControl(&FDCAN_WL,SCREW2,&screw2Tar,&screw2Msg);
-			DriverControl(&FDCAN_TK,LEG1,&leg1Tar,&leg1Msg);
-			DriverControl(&FDCAN_WL,LEG2,&leg2Tar,&leg2Msg);
+			MotorControl();
 			//DEBUG("%f, %f, %f, %f, %f, %f, %f, %f, %f\r\n" , fabsf(screw2Tar.pos), fabsf(screw1Msg.pos), fabsf(screw2Msg.pos), (fabsf(screw1Msg.pos) - fabsf(screw2Msg.pos)), -screw1Msg.currQ, screw2Msg.currQ, -screw1Msg.currQ - screw2Msg.currQ, screw1Msg.vel, screw2Msg.vel);
 		/* 获取驱动器最新消息 */
 			User_Control_GetDriverMsgsSnapshot(&driverMsgs);

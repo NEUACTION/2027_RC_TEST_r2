@@ -26,7 +26,7 @@ void SteeringWheelCtrl(FDCAN_HandleTypeDef* hfdcan, uint8_t DriverNum, float vel
 
     vel = (int32_t)(velAim * 1000.f);// 提高精度
     pos = (int32_t)(PosAim * 10.f);
-
+                                         
     data[0]  = IDENTIFIER_POS_SPD_CTRL;
     data[1]  = (pos >> 24) & 0xFF;
     data[2]  = (pos >> 16) & 0xFF;
